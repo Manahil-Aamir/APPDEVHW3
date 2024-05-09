@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "644745555114",
+    "project_id": "appdevhw3",
+    "storage_bucket": "appdevhw3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644745555114:android:33ae95c60748b20685b4d3",
+        "android_client_info": {
+          "package_name": "com.example.hw3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtrQTq3SXbWMFBVaDEkSgv6bZZoyUyWOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
