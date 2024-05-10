@@ -131,67 +131,75 @@ Widget build(BuildContext context) {
             ),
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                )
+              ),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+              
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+              
+                  if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Text('No data found'),
+                    );
+                  }
+              
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  Map<String, dynamic> data =
+                      snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(data['profilePicture'].toString()), // Assuming profilePicUrl contains the URL of the profile picture
+                    ),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(data['uploaderName'].toString()),
+                        Text(
+              data['createdAt'].toString(), // Assuming date is a DateTime or String field
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+                        ),
+                      ],
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+              data['title'].toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+                        ),
+                        Text(data['description'].toString()),
+                      ],
+                    ),
                   );
-                }
-            
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                }
-            
-                if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-                  return Center(
-                    child: Text('No data found'),
-                  );
-                }
-            
-return ListView.builder(
-  itemCount: snapshot.data!.docs.length,
-  itemBuilder: (context, index) {
-    Map<String, dynamic> data =
-        snapshot.data!.docs[index].data() as Map<String, dynamic>;
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(data['profilePicture'].toString()), // Assuming profilePicUrl contains the URL of the profile picture
-      ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(data['uploaderName'].toString()),
-          Text(
-            data['createdAt'].toString(), // Assuming date is a DateTime or String field
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            data['title'].toString(),
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(data['description'].toString()),
-        ],
-      ),
-      ButtonBar
-    );
-  },
-);
-
-              },
+                },
+              );
+              
+                },
+              ),
             ),
           ),
         ],

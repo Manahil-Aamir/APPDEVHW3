@@ -23,7 +23,7 @@ class _AddState extends State<Add> {
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-Future<void> _addData(String name, String title, String detail) async {
+Future<void> _addData() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
        String? imageUrl;
@@ -33,9 +33,9 @@ Future<void> _addData(String name, String title, String detail) async {
       DateTime now = DateTime.now();
       // Add a new document with a generated ID to a collection
       await _firestore.collection('posts').add({
-        'uploaderName': name,
-        'title': title,
-        'description': detail,
+        'uploaderName': _nameController.text,
+        'title': _titleController.text,
+        'description': _detailController.text,
         'profilePicture': imageUrl,
         'createdAt': now
       });
@@ -77,13 +77,8 @@ Widget build(BuildContext context) {
                   fontWeight: FontWeight.bold,
                   color: Color(0xFFFF7B66),
                 ),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  name = value;
-                });
-              },
-            ),
+
+            )),
             const SizedBox(height: 20),
             TextField(
               controller: _titleController,
@@ -95,11 +90,6 @@ Widget build(BuildContext context) {
                   color: Color(0xFFFF7B66),
                 ),
               ),
-              onChanged: (value) {
-                setState(() {
-                  title = value;
-                });
-              },
             ),
             const SizedBox(height: 20),
             TextField(
@@ -112,11 +102,6 @@ Widget build(BuildContext context) {
                   color: Color(0xFFFF7B66),
                 ),
               ),
-              onChanged: (value) {
-                setState(() {
-                  detail = value;
-                });
-              },
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -124,7 +109,7 @@ Widget build(BuildContext context) {
                 backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFF7B66)),
               ),
               onPressed: () {
-                _addData(name, title, detail);
+                _addData();
               },
               child: const Text(
                 'ADD',
