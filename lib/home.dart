@@ -397,7 +397,7 @@ class _HomeState extends State<Home> {
                                                       25, 8, 0, 8),
                                               child: Icon(
                                                 Icons
-                                                    .task_alt,
+                                                    .chat_bubble_outlined,
                                                 color: Colors.grey[500],
                                                 size: 30,
                                               ),
