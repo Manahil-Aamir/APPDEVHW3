@@ -37,12 +37,12 @@ class _HomeState extends State<Home> {
       if(d==1) return '1 day ago';
       return '$d days ago';
     }
-    if (diff.inHours < 24) {
+    if (diff.inHours < 24 && diff.inHours>0) {
       int h = diff.inHours;
       if(h==1) return '1 hour ago';
       return '$h hours ago';
     }
-    if (diff.inMinutes < 60) {
+    if (diff.inMinutes < 60 && diff.inMinutes>0) {
       int min = diff.inMinutes;
       if(min==1) return '1 minute ago';
       return '$min minutes ago';
@@ -396,8 +396,8 @@ class _HomeState extends State<Home> {
                                                   const EdgeInsets.fromLTRB(
                                                       25, 8, 0, 8),
                                               child: Icon(
-                                                Icons
-                                                    .chat_bubble_outlined,
+                                                CupertinoIcons
+                                                    .chat_bubble,
                                                 color: Colors.grey[500],
                                                 size: 30,
                                               ),
