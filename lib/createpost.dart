@@ -151,6 +151,7 @@ class _AddState extends State<Add> {
                   } else {
                     _addData();
                   }
+                  FocusScope.of(context).unfocus();
                 },
                 child: Text(
                   !b ? 'UPDATE' : 'ADD',
@@ -180,6 +181,46 @@ class _AddState extends State<Add> {
               ),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: const Color(0xFFFF7B66),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.home,
+                color: Colors.white,
+                size: 50,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Home()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.create,
+                color: Colors.white,
+                size: 50,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Add(
+                      name: '',
+                      title: '',
+                      description: '',
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

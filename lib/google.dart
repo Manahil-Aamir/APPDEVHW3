@@ -76,8 +76,6 @@ Future<void> _saveLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     print(_isLoggedIn);
-
-    // Navigate to appropriate screen based on login status
     if (_isLoggedIn) {
       Navigator.pushReplacement(
         context,

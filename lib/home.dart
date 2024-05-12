@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:hw3/createpost.dart';
 import 'package:hw3/google.dart';
 import 'package:provider/provider.dart';
-
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -19,6 +16,41 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final user = FirebaseAuth.instance.currentUser!;
+
+  String datecalc(Timestamp date) {
+    DateTime now = new DateTime.now();
+    DateTime posttime = date.toDate();
+    Duration diff = now.difference(posttime);
+    if (diff.inDays > 365) {
+      int y = (diff.inDays / 365).floor();
+      if(y==1) return '1 year ago';
+      return '$y years ago';
+    }
+    if (diff.inDays > 30) {
+      int m = (diff.inDays / 30).floor();
+      if(m==1) return '1 month ago';
+      return '$m months ago';
+    }
+    if (diff.inDays > 0) {
+      int d = diff.inDays;
+      print(d);
+      if(d==1) return '1 day ago';
+      return '$d days ago';
+    }
+    if (diff.inHours < 24) {
+      int h = diff.inHours;
+      if(h==1) return '1 hour ago';
+      return '$h hours ago';
+    }
+    if (diff.inMinutes < 60) {
+      int min = diff.inMinutes;
+      if(min==1) return '1 minute ago';
+      return '$min minutes ago';
+    } else {
+      return 'just now';
+      
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +72,7 @@ class _HomeState extends State<Home> {
             icon: const Icon(Icons.logout),
             onPressed: () {
               final provider =
-                  Provider.of<GoogleSignInProvider>(context, listen: false);
+              Provider.of<GoogleSignInProvider>(context, listen: false);
               provider.googleSignOut(context);
             },
           ),
@@ -73,12 +105,15 @@ class _HomeState extends State<Home> {
             ),
           ),
           const SizedBox(height: 10),
-          Text(
-            'Start exploring resources',
-            style: TextStyle(
-              color: Colors.grey[500],
-              fontWeight: FontWeight.w500,
-              fontSize: 17,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Start exploring resources',
+              style: TextStyle(
+                color: Colors.grey[500],
+                fontWeight: FontWeight.w500,
+                fontSize: 17,
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -100,7 +135,7 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.all(10),
                           child: const Icon(
                             Icons.search,
-                            color: const Color(0xFFFF7B66),
+                            color: Color(0xFFFF7B66),
                           ),
                           decoration: const BoxDecoration(
                             color: Color.fromARGB(255, 244, 196, 189),
@@ -127,8 +162,9 @@ class _HomeState extends State<Home> {
                     // Implement filter logic
                   },
                   child: Icon(
-                    Icons.file_download_done,
-                    color: const Color(0xFFFF7B66),
+                    Icons.filter_alt,
+                    color: Color(0xFFFF7B66),
+                    size: 30
                   ),
                   style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
@@ -150,7 +186,7 @@ class _HomeState extends State<Home> {
               child: Column(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Row(
                       children: [
                         Text(
@@ -193,7 +229,6 @@ class _HomeState extends State<Home> {
                             child: Text('No data found'),
                           );
                         }
-
                         return ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
@@ -204,7 +239,8 @@ class _HomeState extends State<Home> {
                               padding: const EdgeInsets.all(12.0),
                               child: Container(
                                 color: Colors.grey[200],
-                                margin: const EdgeInsets.symmetric(vertical: 6.0),
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.push(
@@ -214,7 +250,8 @@ class _HomeState extends State<Home> {
                                           name: data['uploaderName'],
                                           title: data['title'],
                                           description: data['description'],
-                                          documentId: snapshot.data!.docs[index].id,
+                                          documentId:
+                                              snapshot.data!.docs[index].id,
                                         ),
                                       ),
                                     );
@@ -244,6 +281,15 @@ class _HomeState extends State<Home> {
                                                   fontSize: 17,
                                                 ),
                                               ),
+                                              const Spacer(),
+                                              Text(
+                                                datecalc(data['createdAt']),
+                                                style: TextStyle(
+                                                  color: Colors.grey[600],
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 17,
+                                                ),
+                                              )
                                             ],
                                           ),
                                           const SizedBox(
@@ -351,7 +397,7 @@ class _HomeState extends State<Home> {
                                                       25, 8, 0, 8),
                                               child: Icon(
                                                 Icons
-                                                    .messenger_outline_outlined,
+                                                    .task_alt,
                                                 color: Colors.grey[500],
                                                 size: 30,
                                               ),
@@ -392,7 +438,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Home()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
