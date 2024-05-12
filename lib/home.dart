@@ -208,6 +208,7 @@ class _HomeState extends State<Home> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('posts')
+                          .orderBy('createdAt', descending: true)
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
